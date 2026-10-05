@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Квест: 70 заказов</title>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c11;--panel:#141821;--ink:#ebe4d2;--mute:#8b8878;--gold:#d4a84b;--gold2:#7a5a1e;--red:#b5281f;--green:#6fc43c;--sky:#5ec8ff;--line:#2a2f3b;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#0a0c11}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:15px/1.4 Rubik,system-ui,sans-serif;background:radial-gradient(120% 50% at 50% -10%,#4a1410 0,transparent 60%),repeating-linear-gradient(115deg,#0a0c11 0 14px,#0d1017 14px 15px),var(--bg);min-height:100%}
+main{max-width:480px;margin:0 auto;padding:14px 14px 50px}
+.t{font-family:Philosopher,Georgia,serif;font-weight:700;letter-spacing:.5px}
+h1{font-size:26px;margin:4px 0 2px;text-shadow:0 0 18px rgba(212,168,75,.45)}
+.sub{color:var(--sky);font-size:13px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 8px;color:var(--gold)}
+h2::before{content:"✦ ";color:var(--sky)}
+.p{position:relative;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold2) 60%,var(--gold));clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+.p::before{content:"";position:absolute;inset:1.5px;background:var(--panel);clip-path:polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px);z-index:0}
+.p>*{position:relative;z-index:1}
+.hero{display:flex;align-items:center;gap:14px}
+.ring{position:relative;width:128px;height:128px;flex:none}
+.ring svg{transform:rotate(-90deg);filter:drop-shadow(0 0 8px rgba(212,168,75,.5))}
+.ring b{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 36px/1 Philosopher,serif}
+.ring small{font:400 12px Rubik;color:var(--mute);margin-top:3px}
+.rank{font-size:21px;color:var(--gold)}
+.mute{color:var(--mute);font-size:13px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.kv div{background:var(--panel);border-left:3px solid var(--gold);padding:8px 10px;border-radius:2px 10px 2px 10px}
+.kv span{display:block;font-size:12px;color:var(--mute)}
+.kv strong{font:700 20px Philosopher,serif}
+.kv .hot{border-color:var(--sky)}.kv .hot strong{color:var(--sky)}
+button{font:700 16px Philosopher,serif;letter-spacing:.5px;border:0;padding:14px;width:100%;color:#1a1204;background:linear-gradient(180deg,#f0cd7a,var(--gold) 55%,#a37a2a);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);cursor:pointer}
+button.r{background:linear-gradient(180deg,#e0453a,var(--red));color:#fff}
+button.g{background:#232836;color:var(--mute)}
+button:active{filter:brightness(1.25)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.big{font-size:26px;padding:26px 10px;position:relative;overflow:hidden}
+.pop{animation:pop .35s}
+@keyframes pop{0%{transform:scale(.94)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+.exp{position:absolute;left:50%;top:6px;font:700 15px Rubik;color:#3a2a00;animation:fl .7s forwards}
+@keyframes fl{to{transform:translateY(-14px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pop,.exp{animation:none}}
+label{display:block;font-size:12px;color:var(--mute);margin-bottom:3px}
+input{font:inherit;width:100%;padding:11px;border-radius:2px 10px 2px 10px;border:1px solid var(--line);background:#0c0f15;color:var(--ink)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.timer{font:700 40px Philosopher,serif;text-align:center;color:var(--green);text-shadow:0 0 14px rgba(111,196,60,.5)}
+.live{text-align:center;color:var(--green);font-size:13px;margin-bottom:4px}
+.live::before{content:"● "}
+.calc{margin-top:12px;text-align:center;font:700 22px Philosopher,serif;color:var(--sky)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:11px;color:var(--mute)}
+.bars i{display:block;width:100%;background:linear-gradient(180deg,var(--sky),#1f6c96);min-height:2px;clip-path:polygon(0 6px,50% 0,100% 6px,100% 100%,0 100%)}
+.sh{padding:11px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.sh:last-child{border:0}
+.sh .hr{font:700 20px Philosopher,serif;color:var(--sky);text-align:right}
+.sh.best .hr::after{content:" ★";color:var(--gold)}
+.x{width:auto;background:none;color:var(--red);font:400 12px Rubik;padding:2px 0;clip-path:none}
+textarea{width:100%;height:70px;font-size:12px;background:#0c0f15;color:var(--ink);border:1px solid var(--line);padding:8px}
+details summary{color:var(--mute);padding:4px 0}
+.win{text-align:center;font:700 22px Philosopher,serif;color:var(--gold);margin-top:10px;text-shadow:0 0 14px rgba(212,168,75,.6)}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var KEY="bike_tracker_v1",S,ending=false;
+function load(){try{var r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return null}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+S=load()||{set:{start:"",end:"",goal:70,week:12000},shifts:[],active:null};
+if(S.active&&!S.active.n&&S.active.orders)S.active.n=S.active.orders;
+var $=function(i){return document.getElementById(i)};
+var today=function(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+var rub=function(n){return Math.round(n).toLocaleString("ru-RU")+" ₽"};
+var hh=function(ms){return ms/36e5};
+var fmt=function(ms){var s=Math.floor(ms/1000);return String(Math.floor(s/3600)).padStart(2,"0")+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+var cnt=function(){return S.active?(S.active.n||0):0};
+var RANKS=["Рекрут","Страж","Рыцарь","Герольд","Архонт","Легенда","Властелин","Божество","Титан"];
+function totals(){var o=cnt(),inc=0,tip=0,h=0;
+  S.shifts.forEach(function(s){o+=s.orders;inc+=s.income;tip+=s.tips;h+=s.hours});
+  return{o:o,inc:inc,tip:tip,h:h}}
+function form(p,d){return '<div class="row" style="margin-top:0"><div><label>Дата</label><input id="'+p+'d" type="date" value="'+(d.date||today())+'"></div><div><label>Часы в работе</label><input id="'+p+'h" type="number" step="0.1" inputmode="decimal" value="'+(d.h||"")+'"></div></div>'+
+ '<div class="row"><div><label>Заказов</label><input id="'+p+'o" type="number" inputmode="numeric" value="'+(d.o||"")+'"></div><div><label>Доход за заказы, ₽</label><input id="'+p+'i" type="number" inputmode="decimal"></div></div>'+
+ '<div class="row"><div><label>Чаевые, ₽</label><input id="'+p+'t" type="number" inputmode="decimal"></div><div><label>Расходы, ₽</label><input id="'+p+'e" type="number" inputmode="decimal"></div></div>'+
+ '<div class="row"><div><label>Пробег, км</label><input id="'+p+'k" type="number" inputmode="decimal"></div><div><label>Батарея, %</label><input id="'+p+'b" type="number" inputmode="numeric"></div></div>'+
+ '<div class="calc" id="'+p+'c">— ₽ в час</div>'}
+function calc(p){var h=+$(p+"h").value,v=(+$(p+"i").value||0)+(+$(p+"t").value||0);$(p+"c").textContent=h>0?rub(v/h)+" в час":"— ₽ в час"}
+function read(p){return{id:Date.now(),date:$(p+"d").value||today(),hours:+$(p+"h").value||0,orders:+$(p+"o").value||0,income:+$(p+"i").value||0,tips:+$(p+"t").value||0,exp:+$(p+"e").value||0,km:$(p+"k").value,bat:$(p+"b").value}}
+function render(){
+  var T=totals(),g=+S.set.goal||70,left=Math.max(0,g-T.o),t=today(),need="—",fc="";
+  if(S.set.end){var dl=Math.max(0,Math.round((new Date(S.set.end)-new Date(t))/864e5)+1);
+    need=left===0?"0":(dl?(left/dl).toFixed(1):"срок вышел");
+    var days=new Set(S.shifts.map(function(s){return s.date})).size;
+    if(days&&dl){var avg=(T.o-cnt())/days,pr=Math.round(T.o+avg*dl);
+      fc='<div class="mute" style="margin-top:8px;color:'+(pr>=g?"var(--green)":"var(--red)")+'">Прогноз: ~'+pr+' из '+g+' (темп '+avg.toFixed(1)+' в день). '+(pr>=g?"Успеваешь!":"Надо поднажать.")+'</div>'}}
+  var tot=T.inc+T.tip,perH=T.h>0?tot/T.h:0,done=T.o>=g;
+  var rk=RANKS[Math.min(RANKS.length-1,Math.floor(Math.min(1,T.o/g)*(RANKS.length-1)))];
+  var C=2*Math.PI*54,off=C*(1-Math.min(1,T.o/g));
+  var h='<h1 class="t">Квест: '+g+' заказов</h1><div class="sub">Яндекс Байк · акция на 7 дней</div>';
+  h+='<div class="p hero"><div class="ring"><svg width="128" height="128"><circle cx="64" cy="64" r="54" fill="none" stroke="#262b38" stroke-width="11"/><circle cx="64" cy="64" r="54" fill="none" stroke="var(--gold)" stroke-width="11" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+off+'"/></svg><b>'+T.o+'<small>из '+g+'</small></b></div><div><div class="mute">Ранг</div><div class="rank t">'+rk+'</div><div class="mute" style="margin-top:6px">Осталось: <b style="color:var(--ink)">'+left+'</b></div><div class="mute">'+(S.set.end?"Дней до конца: "+dl:"Укажи даты в настройках")+'</div></div></div>';
+  if(done)h+='<div class="win">★ ВИКТОРИЯ! Квест выполнен ★</div>';
+  h+=fc+'<div class="kv"><div><span>Нужно в день</span><strong>'+need+'</strong></div><div><span>Заказов в час</span><strong>'+(T.h>0?(T.o/T.h).toFixed(1):"0")+'</strong></div><div><span>Заработано</span><strong>'+rub(tot)+'</strong></div><div class="hot"><span>Средний доход в час</span><strong>'+rub(perH)+'</strong></div><div><span>Чаевые</span><strong>'+rub(T.tip)+'</strong></div><div><span>Цель недели</span><strong>'+Math.min(100,Math.round(tot/(+S.set.week||1)*100))+'%</strong></div></div>';
+  h+='<h2 class="t">Смена</h2><div class="p">';
+  if(ending){var a=S.active;h+='<div class="t" style="font-size:18px;color:var(--gold);margin-bottom:8px">Итоги смены</div>'+form("e",{h:(hh(Date.now()-a.t0)).toFixed(1),o:a.n||0})+'<button style="margin-top:12px" id="save">Сохранить смену</button><button class="g" style="margin-top:8px" id="back">Вернуться в бой</button>'}
+  else if(!S.active)h+='<button class="big t" id="go">⚔ Начать смену</button>';
+  else{h+='<div class="live">в бою</div><div class="timer" id="tm">'+fmt(Date.now()-S.active.t0)+'</div><div class="mute" style="text-align:center;margin:4px 0 12px">Заказов за смену: <b style="color:var(--ink)" id="cn">'+(S.active.n||0)+'</b></div><button class="big" id="plus">+1 ЗАКАЗ</button><div class="row"><button class="g" id="undo">Отменить</button><button class="r" id="fin">Завершить</button></div>'}
+  h+='</div>';
+  h+='<h2 class="t">Заработок по дням</h2><div class="p">'+chart()+'</div>';
+  var best=-1;S.shifts.forEach(function(s){var r=s.hours>0?(s.income+s.tips)/s.hours:0;if(r>best)best=r});
+  h+='<h2 class="t">История смен</h2><div class="p">'+(S.shifts.length?S.shifts.slice().reverse().map(function(s){var r=s.hours>0?(s.income+s.tips)/s.hours:0;
+   return '<div class="sh'+(r===best&&best>0?" best":"")+'"><div><b>'+s.date.split("-").reverse().join(".")+'</b> · '+s.orders+' зак.<div class="mute">'+s.hours.toFixed(1)+' ч · итого '+rub(s.income+s.tips)+(s.tips?" (чай "+rub(s.tips)+")":"")+(s.km?" · "+s.km+" км":"")+(s.bat!==""&&s.bat!=null?" · бат. "+s.bat+"%":"")+(s.exp?" · расход "+rub(s.exp):"")+'</div></div><div><div class="hr">'+rub(r)+'/ч</div><div style="text-align:right"><button class="x" data-d="'+s.id+'">удалить</button></div></div></div>'}).join(""):'<div class="mute">Пока пусто. Начни первую смену.</div>')+'</div>';
+  h+='<h2 class="t">Добавить смену задним числом</h2><div class="p"><details><summary>Открыть форму</summary>'+form("m",{})+'<button class="g" id="madd" style="margin-top:12px">Добавить</button></details></div>';
+  h+='<h2 class="t">Настройки акции</h2><div class="p"><div class="row" style="margin-top:0"><div><label>Старт аренды</label><input id="sd" type="date" value="'+S.set.start+'"></div><div><label>Конец акции</label><input id="ed" type="date" value="'+S.set.end+'"></div></div><div class="row"><div><label>Цель, заказов</label><input id="sg" type="number" inputmode="numeric" value="'+S.set.goal+'"></div><div><label>Цель недели, ₽</label><input id="sw" type="number" inputmode="numeric" value="'+S.set.week+'"></div></div></div>';
+  h+='<h2 class="t">Резервная копия</h2><div class="p"><details><summary>Сохранить или перенести данные</summary><div class="mute" style="margin:6px 0">Скопируй текст в заметки. Для восстановления вставь его сюда и нажми «Загрузить».</div><textarea id="bk"></textarea><div class="row"><button class="g" id="exp1">Показать</button><button class="g" id="imp">Загрузить</button></div><button class="g" id="rst" style="margin-top:10px;color:var(--red)">Стереть всё</button></details></div>';
+  $("app").innerHTML=h;bind();
+}
+function chart(){var m={};S.shifts.forEach(function(s){m[s.date]=(m[s.date]||0)+s.income+s.tips});
+  var k=Object.keys(m).sort().slice(-7);if(!k.length)return '<div class="mute">Появится после первой смены.</div>';
+  var mx=Math.max.apply(null,k.map(function(d){return m[d]}))||1;
+  return '<div class="bars">'+k.map(function(d){return '<div><span>'+Math.round(m[d])+'</span><i style="height:'+Math.max(2,m[d]/mx*80)+'%"></i><span>'+d.slice(8)+'.'+d.slice(5,7)+'</span></div>'}).join("")+'</div>'}
+function bind(){
+  var on=function(i,f){var e=$(i);if(e)e.onclick=f};
+  on("go",function(){S.active={t0:Date.now(),n:0};save();render()});
+  on("plus",function(){S.active.n=(S.active.n||0)+1;save();$("cn").textContent=S.active.n;var b=$("plus");b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");var e=document.createElement("span");e.className="exp";e.textContent="+1 EXP";b.appendChild(e);setTimeout(function(){e.remove()},700);
+    var T=totals();if(T.o===+S.set.goal)setTimeout(render,500)});
+  on("undo",function(){if(S.active.n>0){S.active.n--;save();$("cn").textContent=S.active.n}});
+  on("fin",function(){ending=true;render()});
+  on("back",function(){ending=false;render()});
+  on("save",function(){var s=read("e");S.shifts.push(s);S.active=null;ending=false;save();render()});
+  on("madd",function(){var s=read("m");if(!s.orders)return;S.shifts.push(s);S.shifts.sort(function(a,b){return a.date<b.date?-1:1});save();render()});
+  ["e","m"].forEach(function(p){["h","i","t"].forEach(function(f){var el=$(p+f);if(el)el.oninput=function(){calc(p)}})});
+  document.querySelectorAll("[data-d]").forEach(function(b){b.onclick=function(){if(confirm("Удалить смену?")){S.shifts=S.shifts.filter(function(s){return s.id!=b.dataset.d});save();render()}}});
+  [["sd","start"],["ed","end"],["sg","goal"],["sw","week"]].forEach(function(p){$(p[0]).onchange=function(){S.set[p[1]]=this.value;save();render()}});
+  on("exp1",function(){$("bk").value=JSON.stringify(S)});
+  on("imp",function(){try{var d=JSON.parse($("bk").value);if(d&&d.set&&d.shifts){S=d;save();render()}else alert("Не похоже на копию")}catch(e){alert("Не удалось прочитать текст")}});
+  on("rst",function(){if(confirm("Стереть всё?")){S={set:{start:"",end:"",goal:70,week:12000},shifts:[],active:null};ending=false;save();render()}});
+}
+setInterval(function(){var e=$("tm");if(e&&S.active)e.textContent=fmt(Date.now()-S.active.t0)},1000);
+render();
+</script>
+</body>
+</html>
